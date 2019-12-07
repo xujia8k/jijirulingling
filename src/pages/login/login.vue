@@ -39,11 +39,7 @@
     <div v-transfer-dom>
       <popup v-model="show">
         <!-- group already has a top border, so we need to hide header's bottom border-->
-        <popup-header
-          :right-text="$t('确定')"
-          :title="$t('语言')"
-          @on-click-right="clickRight"
-          :show-bottom-border="false"></popup-header>
+        <popup-header :right-text="$t('确定')" :title="$t('语言')" @on-click-right="clickRight" :show-bottom-border="false"></popup-header>
         <!--<group gutter="0">
           <radio
             :options="['简体中文', 'English','日語','한국어','Deutsch','Français','русский язык','España','العربية','Hungaria']"
@@ -58,263 +54,269 @@
     <div v-if='downbtn' id="down">
       <h6>{{$t('发现新版本,请更新!')}}</h6>
       <p>{{$t('请复制链接在浏览器打开')}}</p>
-      <button class='down_btn'
-           v-clipboard:copy="urls"
-           v-clipboard:success="onCopy"
-           v-clipboard:error="onError">{{$t('复制链接')}}
+      <button class='down_btn' v-clipboard:copy="urls" v-clipboard:success="onCopy" v-clipboard:error="onError">{{$t('复制链接')}}
       </button>
     </div>
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import Header from '../../components/loginHeader'
-  import {TransferDom} from 'vux'
+import Header from '../../components/loginHeader'
+import {
+    TransferDom
+} from 'vux'
 
-  export default {
+export default {
     data() {
-      return {
-        radio001: [
-          {
-            key: '简体中文',
-            icon: './static/images/cn.png',
-            value: '简体中文'
-          }, {
-            key: 'English',
-            icon: './static/images/en.png',
-            value: 'English'
-          }, {
-            key: '日語',
-            icon: './static/images/rn.png',
-            value: '日語'
-          }, {
-            key: '한국어',
-            icon: './static/images/hn.png',
-            value: '한국어'
-          }, {
-            key: 'Deutsch',
-            icon: './static/images/dn.png',
-            value: 'Deutsch'
-          }, {
-            key: 'Français',
-            icon: './static/images/fn.png',
-            value: 'Français'
-          }, {
-            key: 'русский язык',
-            icon: './static/images/elsn.png',
-            value: 'русский язык'
-          }, {
-            key: 'España',
-            icon: './static/images/xn.png',
-            value: 'España'
-          }, {
-            key: 'العربية',
-            icon: './static/images/an.png',
-            value: 'العربية'
-          }, {
-            key: 'Hungaria',
-            icon: './static/images/yn.png',
-            value: 'Hungaria'
-          }
-        ],
-        langCont: '',
-        show: false,
-        logImg: '',
-        imgcode: '',
-        name: '',
-        login_password: '',
-        random: '',
-        downUrl: '',
-        downbtn: false,
-      }
+        return {
+            radio001: [{
+                key: '简体中文',
+                icon: './static/images/cn.png',
+                value: '简体中文'
+            }, {
+                key: 'English',
+                icon: './static/images/en.png',
+                value: 'English'
+            }, {
+                key: '日語',
+                icon: './static/images/rn.png',
+                value: '日語'
+            }, {
+                key: '한국어',
+                icon: './static/images/hn.png',
+                value: '한국어'
+            }, {
+                key: 'Deutsch',
+                icon: './static/images/dn.png',
+                value: 'Deutsch'
+            }, {
+                key: 'Français',
+                icon: './static/images/fn.png',
+                value: 'Français'
+            }, {
+                key: 'русский язык',
+                icon: './static/images/elsn.png',
+                value: 'русский язык'
+            }, {
+                key: 'España',
+                icon: './static/images/xn.png',
+                value: 'España'
+            }, {
+                key: 'العربية',
+                icon: './static/images/an.png',
+                value: 'العربية'
+            }, {
+                key: 'Hungaria',
+                icon: './static/images/yn.png',
+                value: 'Hungaria'
+            }],
+            langCont: '',
+            show: false,
+            logImg: '',
+            imgcode: '',
+            name: '',
+            login_password: '',
+            random: '',
+            downUrl: '',
+            downbtn: false,
+        }
     },
     created() {
-      this.random = Math.floor(Math.random() * 20) + 1
-      this.logImg = './static/images/verify' + this.random + '.png'
-      if (localStorage.getItem('eosLang')) {
-        var eosLang = localStorage.getItem('eosLang')
-        if (eosLang == '简体中文') {
-          this.langCont = '简体中文'
-        } else if (eosLang == 'English') {
-          this.langCont = 'English'
-        } else if (eosLang == '日語') {
-          this.langCont = '日語'
-        } else if (eosLang == '한국어') {
-          this.langCont = '한국어'
-        } else if (eosLang == 'Français') {
-          this.langCont = 'Français'
-        } else if (eosLang == 'русский язык') {
-          this.langCont = 'русский язык'
-        } else if (eosLang == 'Deutsch') {
-          this.langCont = 'Deutsch'
-        } else if (eosLang == 'España') {
-          this.langCont = 'España'
-        } else if (this.langCont == 'العربية') {
-          this.langCont = 'العربية'
-        } else if (this.langCont == 'Hungaria') {
-          this.langCont = 'Hungaria'
-        }
-      } else {
-        this.langCont = '简体中文'
-      }
-      this.getUpdateInfo()
-      this.getInfo()
-    },
-    mounted() {
-    },
-    directives: {
-      TransferDom
-    },
-    components: {Header},
-    computed: {},
-    watch: {
-      'langCont': function () {
-        this.clickRight()
-      }
-    },
-    methods: {
-      getInfo() {
-        var that = this;
-        var url = that.$inter + "System/qrcode";
-        var data = {};
-        that.$axios.post(url, data).then(function (response) {
-          if (response.data.error != 0) {
-            that.$Toast(response.data.message, response.data.error);
-          } else if (response.data.error == 0) {
-            that.urls = response.data.data.url
-          }
-        });
-      },
-      // 复制成功
-      onCopy(e) {
-        var that = this
-        this.$Toast(that.$t('复制成功'))
-
-      },
-      // 复制失败
-      onError(e) {
-        var that = this
-        this.$Toast(that.$t('复制失败'))
-      },
-      /*切换语言*/
-      clickRight() {
-        if (this.langCont == '简体中文') {
-          this.$i18n.locale = 'cn'
-          this.langType = 1
-        } else if (this.langCont == 'English') {
-          this.$i18n.locale = 'en'
-          this.langType = 2
-        } else if (this.langCont == '日語') {
-          this.$i18n.locale = 'rn'
-          this.langType = 8
-        } else if (this.langCont == '한국어') {
-          this.$i18n.locale = 'hn'
-          this.langType = 7
-        } else if (this.langCont == 'Français') {
-          this.$i18n.locale = 'fn'
-          this.langType = 6
-        } else if (this.langCont == 'русский язык') {
-          this.$i18n.locale = 'elsn'
-          this.langType = 5
-        } else if (this.langCont == 'Deutsch') {
-          this.$i18n.locale = 'dn'
-          this.langType = 4
-        } else if (this.langCont == 'España') {
-          this.$i18n.locale = 'xn'
-          this.langType = 9
-        } else if (this.langCont == 'العربية') {
-          this.$i18n.locale = 'an'
-          this.langType = 3
-        } else if (this.langCont == 'Hungaria') {
-          this.$i18n.locale = 'yn'
-          this.langType = 10
-        }
-        localStorage.setItem('eosLang', this.langCont)
-        this.switchlang()
-        // this.getEosInfo()
-        this.show = false
-      },
-      /*修改图像验证码*/
-      logImgBtn() {
         this.random = Math.floor(Math.random() * 20) + 1
         this.logImg = './static/images/verify' + this.random + '.png'
-      },
-      /*登录按钮*/
-      logSubmit() {
-        if ((this.random == 1 && this.imgcode == '4930') || (this.random == 2 && this.imgcode == '0227') || (this.random == 3 && this.imgcode == '0927') || (this.random == 4 && this.imgcode == '0628') || (this.random == 5 && this.imgcode == '0871') || (this.random == 6 && this.imgcode == '7299') || (this.random == 7 && this.imgcode == '3824') || (this.random == 8 && this.imgcode == '9171') || (this.random == 9 && this.imgcode == '6156') || (this.random == 10 && this.imgcode == '9954') || (this.random == 11 && this.imgcode == '8443') || (this.random == 12 && this.imgcode == '0590') || (this.random == 13 && this.imgcode == '3271') || (this.random == 14 && this.imgcode == '8672') || (this.random == 15 && this.imgcode == '9379') || (this.random == 16 && this.imgcode == '2939') || (this.random == 17 && this.imgcode == '4586') || (this.random == 18 && this.imgcode == '9362') || (this.random == 19 && this.imgcode == '8772') || (this.random == 20 && this.imgcode == '8642')) {
-          var that = this
-          var url = that.$inter + 'Login/index'
-          var data = {
-            name: that.name,
-            login_password: that.login_password,
-            img_code: that.imgcode
-          }
-          that.$axios.post(url, data).then(function (response) {
-            if (response.data.error != 0) {
-              that.$Toast(response.data.message, response.data.error);
-              that.random = Math.floor(Math.random() * 20) + 1
-              that.logImg = './static/images/verify' + that.random + '.png'
-            } else if (response.data.error == 0) {
-              that.$Toast(response.data.message)
-              that.$store.state.online = true
-              that.getEosInfo()
-              setTimeout(function () {
-                that.$router.push({path: '/index'})
-              }, 2000)
+        if (localStorage.getItem('eosLang')) {
+            var eosLang = localStorage.getItem('eosLang')
+            if (eosLang == '简体中文') {
+                this.langCont = '简体中文'
+            } else if (eosLang == 'English') {
+                this.langCont = 'English'
+            } else if (eosLang == '日語') {
+                this.langCont = '日語'
+            } else if (eosLang == '한국어') {
+                this.langCont = '한국어'
+            } else if (eosLang == 'Français') {
+                this.langCont = 'Français'
+            } else if (eosLang == 'русский язык') {
+                this.langCont = 'русский язык'
+            } else if (eosLang == 'Deutsch') {
+                this.langCont = 'Deutsch'
+            } else if (eosLang == 'España') {
+                this.langCont = 'España'
+            } else if (this.langCont == 'العربية') {
+                this.langCont = 'العربية'
+            } else if (this.langCont == 'Hungaria') {
+                this.langCont = 'Hungaria'
             }
-          })
         } else {
-          this.random = Math.floor(Math.random() * 20) + 1
-          this.logImg = './static/images/verify' + this.random + '.png'
-          this.imgcode = ''
-          this.$Toast(this.$t('请输入正确的图片验证码'))
+            this.langCont = '简体中文'
         }
-      },
-      /*切换语言*/
-      switchlang() {
-        var that = this
-        var url = that.$inter + 'System/setlanguage'
-        var data = {type: that.langType}
-        that.$axios.post(url, data).then(function (response) {
-          if (response.data.error != 0) {
-            that.$Toast(response.data.message, response.data.error);
-          } else if (response.data.error == 0) {
-            // that.$Toast(response.data.message)
-          }
-        })
-      },
-      /*获取个人信息*/
-      getEosInfo() {
-        var that = this
-        var url = that.$inter + 'Member/index'
-        var data = {}
-        that.$axios.post(url, data).then(function (response) {
-          if (response.data.error != 0) {
-            that.$Toast(response.data.message, response.data.error);
-          } else if (response.data.error == 0) {
-            localStorage.setItem('eosInfo', JSON.stringify(response.data.data))
-          }
-        })
-      },
-      /*获取更新信息*/
-      getUpdateInfo() {
-        var that = this
-        var url = that.$inter + 'System/version'
-        var data = {ver: 5}
-        that.$axios.post(url, data).then(function (response) {
-          if (response.data.error != 0) {
-          } else if (response.data.error == 0) {
-            that.downUrl = response.data.data.url
-            if (response.data.data.code == 1) {
-              that.downbtn = true
+        this.getUpdateInfo()
+        this.getInfo()
+    },
+    mounted() {},
+    directives: {
+        TransferDom
+    },
+    components: {
+        Header
+    },
+    computed: {},
+    watch: {
+        'langCont': function () {
+            this.clickRight()
+        }
+    },
+    methods: {
+        getInfo() {
+            var that = this;
+            var url = that.$inter + "System/qrcode";
+            var data = {};
+            that.$axios.post(url, data).then(function (response) {
+                if (response.data.error != 0) {
+                    that.$Toast(response.data.message, response.data.error);
+                } else if (response.data.error == 0) {
+                    that.urls = response.data.data.url
+                }
+            });
+        },
+        // 复制成功
+        onCopy(e) {
+            var that = this
+            this.$Toast(that.$t('复制成功'))
+
+        },
+        // 复制失败
+        onError(e) {
+            var that = this
+            this.$Toast(that.$t('复制失败'))
+        },
+        /*切换语言*/
+        clickRight() {
+            if (this.langCont == '简体中文') {
+                this.$i18n.locale = 'cn'
+                this.langType = 1
+            } else if (this.langCont == 'English') {
+                this.$i18n.locale = 'en'
+                this.langType = 2
+            } else if (this.langCont == '日語') {
+                this.$i18n.locale = 'rn'
+                this.langType = 8
+            } else if (this.langCont == '한국어') {
+                this.$i18n.locale = 'hn'
+                this.langType = 7
+            } else if (this.langCont == 'Français') {
+                this.$i18n.locale = 'fn'
+                this.langType = 6
+            } else if (this.langCont == 'русский язык') {
+                this.$i18n.locale = 'elsn'
+                this.langType = 5
+            } else if (this.langCont == 'Deutsch') {
+                this.$i18n.locale = 'dn'
+                this.langType = 4
+            } else if (this.langCont == 'España') {
+                this.$i18n.locale = 'xn'
+                this.langType = 9
+            } else if (this.langCont == 'العربية') {
+                this.$i18n.locale = 'an'
+                this.langType = 3
+            } else if (this.langCont == 'Hungaria') {
+                this.$i18n.locale = 'yn'
+                this.langType = 10
             }
-          }
-        })
-      },
-      downAppBtn() {
-        location.href = this.downUrl
-      },
+            localStorage.setItem('eosLang', this.langCont)
+            this.switchlang()
+            // this.getEosInfo()
+            this.show = false
+        },
+        /*修改图像验证码*/
+        logImgBtn() {
+            this.random = Math.floor(Math.random() * 20) + 1
+            this.logImg = './static/images/verify' + this.random + '.png'
+        },
+        /*登录按钮*/
+        logSubmit() {
+            if ((this.random == 1 && this.imgcode == '4930') || (this.random == 2 && this.imgcode == '0227') || (this.random == 3 && this.imgcode == '0927') || (this.random == 4 && this.imgcode == '0628') || (this.random == 5 && this.imgcode == '0871') || (this.random == 6 && this.imgcode == '7299') || (this.random == 7 && this.imgcode == '3824') || (this.random == 8 && this.imgcode == '9171') || (this.random == 9 && this.imgcode == '6156') || (this.random == 10 && this.imgcode == '9954') || (this.random == 11 && this.imgcode == '8443') || (this.random == 12 && this.imgcode == '0590') || (this.random == 13 && this.imgcode == '3271') || (this.random == 14 && this.imgcode == '8672') || (this.random == 15 && this.imgcode == '9379') || (this.random == 16 && this.imgcode == '2939') || (this.random == 17 && this.imgcode == '4586') || (this.random == 18 && this.imgcode == '9362') || (this.random == 19 && this.imgcode == '8772') || (this.random == 20 && this.imgcode == '8642')) {
+                var that = this
+                var url = that.$inter + 'Login/index'
+                var data = {
+                    name: that.name,
+                    login_password: that.login_password,
+                    img_code: that.imgcode
+                }
+                that.$axios.post(url, data).then(function (response) {
+                    if (response.data.error != 0) {
+                        that.$Toast(response.data.message, response.data.error);
+                        that.random = Math.floor(Math.random() * 20) + 1
+                        that.logImg = './static/images/verify' + that.random + '.png'
+                    } else if (response.data.error == 0) {
+                        that.$Toast(response.data.message)
+                        that.$store.state.online = true
+                        that.getEosInfo()
+                        setTimeout(function () {
+                            that.$router.push({
+                                path: '/index'
+                            })
+                        }, 2000)
+                    }
+                })
+            } else {
+                this.random = Math.floor(Math.random() * 20) + 1
+                this.logImg = './static/images/verify' + this.random + '.png'
+                this.imgcode = ''
+                this.$Toast(this.$t('请输入正确的图片验证码'))
+            }
+        },
+        /*切换语言*/
+        switchlang() {
+            var that = this
+            var url = that.$inter + 'System/setlanguage'
+            var data = {
+                type: that.langType
+            }
+            that.$axios.post(url, data).then(function (response) {
+                console.log('response.data.message:',response.data.message)
+                console.log('response.data.error:',response.data.error)
+                if (response.data.error != 0) {
+                    that.$Toast(response.data.message, response.data.error);
+                } else if (response.data.error == 0) {
+                    // that.$Toast(response.data.message)
+                }
+            })
+        },
+        /*获取个人信息*/
+        getEosInfo() {
+            var that = this
+            var url = that.$inter + 'Member/index'
+            var data = {}
+            that.$axios.post(url, data).then(function (response) {
+                if (response.data.error != 0) {
+                    that.$Toast(response.data.message, response.data.error);
+                } else if (response.data.error == 0) {
+                    localStorage.setItem('eosInfo', JSON.stringify(response.data.data))
+                }
+            })
+        },
+        /*获取更新信息*/
+        getUpdateInfo() {
+            var that = this
+            var url = that.$inter + 'System/version'
+            var data = {
+                ver: 5
+            }
+            that.$axios.post(url, data).then(function (response) {
+                if (response.data.error != 0) {} else if (response.data.error == 0) {
+                    that.downUrl = response.data.data.url
+                    if (response.data.data.code == 1) {
+                        that.downbtn = true
+                    }
+                }
+            })
+        },
+        downAppBtn() {
+            location.href = this.downUrl
+        },
     }
-  }
+}
+
 </script>
 <style lang="scss" scoped type="text/scss">
   @import "../../../static/css/css3";
