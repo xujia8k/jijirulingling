@@ -10,7 +10,7 @@
       <div class="banner">
         <div class="imgs">
           <img :src="imgsrc" alt="">
-          <input type="file" @change='chan'>
+          <!-- <input type="file" @change='chan'> -->
         </div>
         <p>{{eosInfo.name}}</p>
         <div class="member">

@@ -21,49 +21,51 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import Header from '../../components/header1'
+import Header from '../../components/header1'
 
-  export default {
+export default {
     data() {
-      return {
-        hbBtn: false,
-        play: null,
-        time: 6,
-        indexInfo: {}
-      }
-    },
-    created() {
-    },
-    mounted() {
-      this.play = setInterval(() => {
-        this.time = this.time - 1
-        console.log(this.time);
-        if (this.time <= 0) {
-          clearInterval(this.play)
-          this.getindexInfo()
+        return {
+            hbBtn: false,
+            play: null,
+            time: 6,
+            indexInfo: {}
         }
-      }, 1000)
     },
-    components: {Header},
+    created() {},
+    mounted() {
+        this.play = setInterval(() => {
+            this.time = this.time - 1
+            console.log(this.time);
+            if (this.time <= 0) {
+                clearInterval(this.play)
+                this.getindexInfo()
+            }
+        }, 1000)
+    },
+    components: {
+        Header
+    },
     computed: {},
     watch: {},
     methods: {
-      /*签到*/
-      getindexInfo() {
-        var that = this;
-        var url = that.$inter + "Wallet/sign_in";
-        var data = {};
-        that.$axios.post(url, data).then(function (response) {
-          if (response.data.error != 0) {
-            that.$Toast(response.data.message,response.data.error);
-          } else if (response.data.error == 0) {
-            that.indexInfo = response.data.data
-            that.hbBtn = true
-          }
-        });
-      },
+        /*签到*/
+        getindexInfo() {
+            var that = this;
+            var url = that.$inter + "Wallet/sign_in";
+            var data = {};
+            that.$axios.post(url, data).then(function (response) {
+                if (response.data.error != 0) {
+                    that.$Toast(response.data.message, response.data.error);
+                } else if (response.data.error == 0) {
+                    that.indexInfo = response.data.data
+                    that.hbBtn = true
+                }
+            });
+        },
     }
-  }
+}
+
 </script>
 <style lang="scss" scoped type="text/scss">
   @import "../../../static/css/css3";

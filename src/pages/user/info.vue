@@ -17,11 +17,11 @@
         <input type="text" :placeholder="$t('请输入用户名')" disabled v-model='eosInfo.name'>
         <!--<i></i>-->
       </div>
-      <div class="list vux-1px-b" @click="$router.push({path:'/modmobile'})">
+      <!--  <div class="list vux-1px-b" @click="$router.push({path:'/modmobile'})">
         <label>{{$t('手机号')}}</label>
         <input type="text" :placeholder="$t('请输入手机号')" disabled v-model='eosInfo.mobile'>
         <i></i>
-      </div>
+      </div> -->
       <!-- <div class="list vux-1px-b">
          <label>{{$t('昵称')}}</label>
          <input type="text" :placeholder="$t('请输入昵称')" v-model='eosInfo.nickname'>
@@ -34,78 +34,84 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import Header from '../../components/header1'
+import Header from '../../components/header1'
 
-  export default {
+export default {
     data() {
-      return {
-        eosInfo: {},
-        name: '',
-        nickname: '',
-        complete: false,
-      }
+        return {
+            eosInfo: {},
+            name: '',
+            nickname: '',
+            complete: false,
+        }
     },
     created() {
-      if (localStorage.getItem('eosInfo')) {
-        this.eosInfo = JSON.parse(localStorage.getItem('eosInfo'))
-      }
+        if (localStorage.getItem('eosInfo')) {
+            this.eosInfo = JSON.parse(localStorage.getItem('eosInfo'))
+        }
     },
-    mounted() {
+    mounted() {},
+    components: {
+        Header
     },
-    components: {Header},
     computed: {},
     watch: {},
     methods: {
-      /*修改用户名*/
-      editName() {
-        var that = this
-        var url = that.$inter + 'Member/editName'
-        var data = {
-          name: that.eosInfo.name
-        }
-        that.$axios.post(url, data).then(function (response) {
-          if (response.data.error != 0) {
-            that.$Toast(response.data.message, response.data.error);
-          } else if (response.data.error == 0) {
-            if (that.complete) {
-              that.$Toast(response.data.message)
-              localStorage.setItem('eosInfo', JSON.stringify(that.eosInfo))
-              setTimeout(function () {
-                that.$router.push({path: '/user'})
-              }, 2000)
+        /*修改用户名*/
+        editName() {
+            var that = this
+            var url = that.$inter + 'Member/editName'
+            var data = {
+                name: that.eosInfo.name
             }
-            that.complete = true
-          }
-        })
-      },
-      /*修改昵称*/
-      editNickName() {
-        var that = this
-        var url = that.$inter + 'Member/editNickName'
-        var data = {
-          nickname: that.eosInfo.nickname
-        }
-        that.$axios.post(url, data).then(function (response) {
-          if (response.data.error != 0) {
-            that.$Toast(response.data.message, response.data.error);
-          } else if (response.data.error == 0) {
-            if (that.complete) {
-              that.$Toast(response.data.message)
-              localStorage.setItem('eosInfo', JSON.stringify(that.eosInfo))
-              setTimeout(function () {
-                that.$router.push({path: '/user'})
-              }, 2000)
+            that.$axios.post(url, data).then(function (response) {
+                if (response.data.error != 0) {
+                    that.$Toast(response.data.message, response.data.error);
+                } else if (response.data.error == 0) {
+                    if (that.complete) {
+                        that.$Toast(response.data.message)
+                        localStorage.setItem('eosInfo', JSON.stringify(that.eosInfo))
+                        setTimeout(function () {
+                            that.$router.push({
+                                path: '/user'
+                            })
+                        }, 2000)
+                    }
+                    that.complete = true
+                }
+            })
+        },
+        /*修改昵称*/
+        editNickName() {
+            var that = this
+            var url = that.$inter + 'Member/editNickName'
+            var data = {
+                nickname: that.eosInfo.nickname
             }
-            that.complete = true
-          }
-        })
-      },
-      modifyBtn() {
-        this.editName()
-        this.editNickName()
-      }
+            that.$axios.post(url, data).then(function (response) {
+                if (response.data.error != 0) {
+                    that.$Toast(response.data.message, response.data.error);
+                } else if (response.data.error == 0) {
+                    if (that.complete) {
+                        that.$Toast(response.data.message)
+                        localStorage.setItem('eosInfo', JSON.stringify(that.eosInfo))
+                        setTimeout(function () {
+                            that.$router.push({
+                                path: '/user'
+                            })
+                        }, 2000)
+                    }
+                    that.complete = true
+                }
+            })
+        },
+        modifyBtn() {
+            this.editName()
+            this.editNickName()
+        }
     }
-  }
+}
+
 </script>
 <style lang="scss" scoped type="text/scss">
   @import "../../../static/css/css3";

@@ -13,7 +13,7 @@
           <p>{{$t('上传你的钱包地址二维码')}}:</p>
           <div class="imgs">
             <img :src="imgsrc1" alt="">
-            <input type="file" @change='chan(1,$event)'>
+            <!-- <input type="file" @change='chan(1,$event)'> -->
           </div>
         </div>
         <div class="list vux-1px-b">
@@ -27,10 +27,10 @@
             <input type="file" @change='chan(2,$event)'>
           </div>
         </div>
-        <div class="list vux-1px-b">
+        <!-- <div class="list vux-1px-b">
           <label class='iphone' for="">{{$t('手机后四位')}}：</label>
           <input type="text" :placeholder="$t('请输入绑定手机后四位')" v-model='moible_four'>
-        </div>
+        </div> -->
         <div class="list vux-1px-b">
           <label class='iphone' for="">{{$t('交易密码')}}：</label>
           <input type="password" :placeholder="$t('请输入交易密码')" v-model='safe_password'>
@@ -43,148 +43,154 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import Header from '../../components/header1'
+import Header from '../../components/header1'
 
-  export default {
+export default {
     data() {
-      return {
-        switchBtn: true,
-        eosInfo: {},
-        mobile: '',
-        codeBtn: true,
-        codeName: '',
-        code: '',
-        type: '',
-        code: '',
-        address: '',
-        moible_four:'',
-        safe_password: '',
-        memo: '',
-        img1: '',
-        img2: '',
-        imgsrc1: '',
-        imgsrc2: ''
-      }
+        return {
+            switchBtn: true,
+            eosInfo: {},
+            mobile: '',
+            codeBtn: true,
+            codeName: '',
+            code: '',
+            type: '',
+            code: '',
+            address: '',
+            moible_four: '',
+            safe_password: '',
+            memo: '',
+            img1: '',
+            img2: '',
+            imgsrc1: '',
+            imgsrc2: ''
+        }
     },
     created() {
-      this.getgetaddress()
-      this.codeName = this.$t('获取验证码')
-      this.eosInfo = JSON.parse(localStorage.getItem('eosInfo'))
-      if (localStorage.getItem('eosInfo')) {
-        this.mobile = this.eosInfo.mobile
-      }
+        this.getgetaddress()
+        this.codeName = this.$t('获取验证码')
+        this.eosInfo = JSON.parse(localStorage.getItem('eosInfo'))
+        if (localStorage.getItem('eosInfo')) {
+            this.mobile = this.eosInfo.mobile
+        }
     },
-    mounted() {
+    mounted() {},
+    components: {
+        Header
     },
-    components: {Header},
     computed: {},
     watch: {},
     methods: {
-      /*获取钱包地址*/
-      getgetaddress() {
-        var that = this
-        var url = that.$inter + 'member/getaddress'
-        var data = {type: 1}
-        that.$axios.post(url, data).then(function (response) {
-          if (response.data.error != 0) {
-            that.$Toast(response.data.message, response.data.error);
-          } else if (response.data.error == 0) {
-            that.address = response.data.data.address
-            that.memo = response.data.data.memo
-            that.img1 = response.data.data.eos_img_tmp
-            that.img2 = response.data.data.memo_img_tmp
-            that.imgsrc1 = response.data.data.eos_img
-            that.imgsrc2 = response.data.data.memo_img
-          }
-        })
-      },
-
-      /*上传图片*/
-      chan(x, e) {
-        // 创建文件读取对象
-        var that = this
-        var reader = new FileReader();
-        // 通过当前的file标签 获取选择的文件
-        // 调用该对象的方法读取文件 文件
-        // 读取文件是一个耗时操作 不一定什么时候读取完毕
-        reader.readAsDataURL(e.target.files[0]);
-        // 添加事件
-        // 耗时操作 通过事件的方式进行注册 并且回调
-        reader.onload = function () {
-          // 使用读取完毕的文件
-          //使用返回的结果 即可
-          that.read = e.target.files[0]
-          var url = that.$inter + 'System/upload'
-          var data = new FormData();
-          data.append('img', that.read);
-          that.$axios.post(url, data).then(function (response) { //获取到内容处理
-            if (response.data.error != 0) {
-              that.$Toast(response.data.message, response.data.error);
-            } else if (response.data.error == 0) {
-              that['imgsrc' + x] = reader.result
-              that['img' + x] = response.data.data.img //生成生成的http地址
+        /*获取钱包地址*/
+        getgetaddress() {
+            var that = this
+            var url = that.$inter + 'member/getaddress'
+            var data = {
+                type: 1
             }
-          })
-        }
-      },
-      /*获取短信验证码*/
-      /*checksms() {
-        if (this.codeBtn) {
-          var that = this
-          var url = that.$inter + 'System/sendMobile'
-          that.codeBtn = false
-          var play = null
-          var data1 = {mobile: that.mobile, type: 10011,}
-          that.$axios.post(url, data1).then(function (response) { //获取到内容处理
-            if (response.data.error != 0) {
-              that.$Toast(response.data.message)
-              that.codeBtn = true
-            } else if (response.data.error == 0) {
-              that.$Toast(response.data.message)
-              var time = 60
-              play = setInterval(() => {
-                time--
-                that.codeName = time + 's'
-                if (time <= 0) {
-                  clearInterval(play)
-                  that.codeName = that.$t('获取验证码')
-                  that.codeBtn = true
+            that.$axios.post(url, data).then(function (response) {
+                if (response.data.error != 0) {
+                    that.$Toast(response.data.message, response.data.error);
+                } else if (response.data.error == 0) {
+                    that.address = response.data.data.address
+                    that.memo = response.data.data.memo
+                    that.img1 = response.data.data.eos_img_tmp
+                    that.img2 = response.data.data.memo_img_tmp
+                    that.imgsrc1 = response.data.data.eos_img
+                    that.imgsrc2 = response.data.data.memo_img
                 }
-              }, 1000)
+            })
+        },
+
+        /*上传图片*/
+        chan(x, e) {
+            // 创建文件读取对象
+            var that = this
+            var reader = new FileReader();
+            // 通过当前的file标签 获取选择的文件
+            // 调用该对象的方法读取文件 文件
+            // 读取文件是一个耗时操作 不一定什么时候读取完毕
+            reader.readAsDataURL(e.target.files[0]);
+            // 添加事件
+            // 耗时操作 通过事件的方式进行注册 并且回调
+            reader.onload = function () {
+                // 使用读取完毕的文件
+                //使用返回的结果 即可
+                that.read = e.target.files[0]
+                var url = that.$inter + 'System/upload'
+                var data = new FormData();
+                data.append('img', that.read);
+                that.$axios.post(url, data).then(function (response) { //获取到内容处理
+                    if (response.data.error != 0) {
+                        that.$Toast(response.data.message, response.data.error);
+                    } else if (response.data.error == 0) {
+                        that['imgsrc' + x] = reader.result
+                        that['img' + x] = response.data.data.img //生成生成的http地址
+                    }
+                })
             }
-          })
-        }
-      },*/
-      /*确定提交*/
-      submitBtn() {
-        if (this.switchBtn) {
-          var that = this
-          that.switchBtn = false
-          var url = that.$inter + 'Member/editaddress'
-          var data = {
-            type: 1,
-            address: that.address,
-            memo: that.memo,
-            eos_img: that.img1,
-            memo_img: that.img2,
-            moible_four:that.moible_four,
-            safe_password: that.safe_password,
+        },
+        /*获取短信验证码*/
+        /*checksms() {
+          if (this.codeBtn) {
+            var that = this
+            var url = that.$inter + 'System/sendMobile'
+            that.codeBtn = false
+            var play = null
+            var data1 = {mobile: that.mobile, type: 10011,}
+            that.$axios.post(url, data1).then(function (response) { //获取到内容处理
+              if (response.data.error != 0) {
+                that.$Toast(response.data.message)
+                that.codeBtn = true
+              } else if (response.data.error == 0) {
+                that.$Toast(response.data.message)
+                var time = 60
+                play = setInterval(() => {
+                  time--
+                  that.codeName = time + 's'
+                  if (time <= 0) {
+                    clearInterval(play)
+                    that.codeName = that.$t('获取验证码')
+                    that.codeBtn = true
+                  }
+                }, 1000)
+              }
+            })
           }
-          that.$axios.post(url, data).then(function (response) {
-            if (response.data.error != 0) {
-              that.$Toast(response.data.message, response.data.error);
-              that.switchBtn = true
-            } else if (response.data.error == 0) {
-              that.$Toast(response.data.message)
-              setTimeout(function () {
-                that.$router.push({path: '/user'})
-              }, 2000)
+        },*/
+        /*确定提交*/
+        submitBtn() {
+            if (this.switchBtn) {
+                var that = this
+                that.switchBtn = false
+                var url = that.$inter + 'Member/editaddress'
+                var data = {
+                    type: 1,
+                    address: that.address,
+                    memo: that.memo,
+                    eos_img: that.img1,
+                    memo_img: that.img2,
+                    moible_four: that.moible_four,
+                    safe_password: that.safe_password,
+                }
+                that.$axios.post(url, data).then(function (response) {
+                    if (response.data.error != 0) {
+                        that.$Toast(response.data.message, response.data.error);
+                        that.switchBtn = true
+                    } else if (response.data.error == 0) {
+                        that.$Toast(response.data.message)
+                        setTimeout(function () {
+                            that.$router.push({
+                                path: '/user'
+                            })
+                        }, 2000)
+                    }
+                })
             }
-          })
-        }
-      },
+        },
     }
-  }
+}
+
 </script>
 <style lang="scss" scoped type="text/scss">
   @import "../../../static/css/css3";
