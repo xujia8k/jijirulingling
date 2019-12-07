@@ -1,0 +1,164 @@
+html, body, address, dl, div, form, h1, h2, h3, h4, h5, h6, ol, button, p, table, ul, dd, dt, li, em, i, img, span, strong, select, input, header, footer, div {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  -webkit-text-size-adjust: none;
+}
+
+body {
+  font-family: 'Microsoft YaHei', 'Tahoma', 'Verdana', 'Arial', 'Helvetica', 'sans-serif';
+  font-size: 14px;
+  color: #333;
+  background-color: #fff;
+}
+
+em, i {
+  font-style: normal;
+}
+
+canvas {
+  width: 100%;
+}
+
+img, button, input {
+  display: inline-block;
+  vertical-align: middle;
+  border: 0;
+}
+
+h1, h2, h3, h4, h5, h6, tr, th, td {
+  font-weight: normal;
+  font-size: 100%;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  table-layout: fixed;
+  width: 100%;
+}
+
+/* set html5 elements to block */
+article, aside, details, figcaption, figure, footer, header menu, nav, section {
+  display: block;
+}
+
+a {
+  text-decoration: none;
+  color: #606060;
+}
+
+li {
+  list-style: none;
+}
+
+/* reset webkit search input css */
+input[type=search] {
+  -webkit-appearance: none;
+  outline: none;
+}
+
+input[type=text] {
+  outline: none;
+  -webkit-appearance: none;
+  -webkit-appearance: none;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+input[type="search"]::-webkit-search-decoration, input[type="search"]::-webkit-search-cancel-button {
+  display: none;
+}
+
+img {
+  display: inline-block;
+  border: 0;
+  vertical-align: middle;
+}
+
+input, button, textarea {
+  outline: none;
+}
+
+em, i, strong {
+  font-style: normal;
+
+}
+
+.normal {
+  font-style: normal;
+}
+
+.hide {
+  display: none;
+}
+
+.fl {
+  float: left;
+}
+
+.fr {
+  float: right;
+}
+
+.clearfix:after {
+  visibility: hidden;
+  display: block;
+  font-size: 0;
+  content: "020";
+  clear: both;
+  height: 0;
+}
+
+.clearfix {
+  zoom: 1;
+  clear: both;
+}
+
+::-webkit-input-placeholder {
+  color: #c7c7c7;
+}
+
+::-moz-placeholder {
+  color: #c7c7c7;
+}
+
+:-moz-placeholder {
+  color: #E7E7E7;
+}
+
+#app .vux-check-icon .weui-icon:before {
+  color: #E7E7E7;
+}
+input:disabled::-webkit-input-placeholder {
+  color: #E7E7E7;
+  -webkit-text-fill-color: #E7E7E7;
+}
+
+input:disabled::-moz-input-placeholder {
+  color: #E7E7E7;
+  -webkit-text-fill-color: #E7E7E7;
+}
+
+input:disabled:-ms-input-placeholder {
+  color: #E7E7E7;
+  -webkit-text-fill-color: #E7E7E7;
+}
+
+input:disabled::placeholder {
+  color: #E7E7E7;
+  -webkit-text-fill-color: #E7E7E7;
+}
+#app .vux-divider{
+  color: #E7E7E7;
+}
+#app .weui-loadmore__tips{
+  color: #E7E7E7;
+}
